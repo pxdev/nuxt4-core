@@ -22,6 +22,8 @@ export const socialConnections = sqliteTable("social_connections", {
     updatedAt: integer().notNull()
 });
 
+
+
 export const pages = sqliteTable("pages", {
     id: integer().primaryKey({ autoIncrement: true }),
     title: text().notNull(),
