@@ -24,8 +24,10 @@
     "@nuxt/eslint": "^1.9.0",
     "@nuxt/fonts": "^0.11.4",
     "@nuxt/icon": "^2.0.0",
+    "@nuxt/image": "^1.11.0",
     "@nuxt/ui": "^3.3.5",
     "@nuxtjs/i18n": "^10.0.6",
+    "@vueuse/motion": "^3.0.3",
     "@vueuse/nuxt": "^13.9.0",
     "bcryptjs": "^3.0.2",
     "better-sqlite3": "^12.2.0",
@@ -37,6 +39,8 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@iconify-json/hugeicons": "^1.2.16",
+    "@iconify-json/lucide": "^1.2.68",
     "@types/better-sqlite3": "^7.6.13",
     "date-fns": "^4.1.0",
     "drizzle-kit": "^0.31.4",

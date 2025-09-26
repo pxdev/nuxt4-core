@@ -1,5 +1,6 @@
 <script setup>
 
+
 const { data: pages } = useFetch('/api/pages', {
   method: 'GET',
 })
@@ -8,8 +9,10 @@ const { data: pages } = useFetch('/api/pages', {
 
 <template>
   <main class="h-full">
-    {{ pages }}
-   </main>
+    <layout-header/>
+    <main-banner />
+   <debug>{{ pages }}</debug>
+  </main>
 </template>
 
 <style scoped></style>

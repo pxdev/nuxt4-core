@@ -4,6 +4,12 @@ import {APP_INFO} from "../shared/utils/site";
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false,
+        },
+    ],
     app: {
         head: {
             charset: "utf-8",
@@ -16,13 +22,15 @@ export default defineNuxtConfig({
         }
     },
     modules: [
-        '@nuxt/eslint',
-        '@nuxt/ui',
-        '@vueuse/nuxt',
-        "nuxt-auth-utils",
-        '@nuxtjs/i18n',
-        "@nuxt/fonts",
-        "@nuxt/icon",
+      '@nuxt/eslint',
+      '@nuxt/ui',
+      '@vueuse/nuxt',
+      "nuxt-auth-utils",
+      '@nuxtjs/i18n',
+      "@nuxt/fonts",
+      "@nuxt/icon",
+      '@nuxt/image',
+      '@vueuse/motion/nuxt',
     ],
     runtimeConfig: {
         secure: {
@@ -53,7 +61,7 @@ export default defineNuxtConfig({
                 flag: 'flag:us-4x3',
                 dir: 'ltr',
                 name: 'English',
-                file: 'en.json',
+                file: 'en.js',
             },
             {
                 code: 'ar',
@@ -61,7 +69,7 @@ export default defineNuxtConfig({
                 flag: 'flag:sa-4x3',
                 dir: 'rtl',
                 name: 'Arabic',
-                file: 'ar.json',
+                file: 'ar.js',
             },
         ],
     },
