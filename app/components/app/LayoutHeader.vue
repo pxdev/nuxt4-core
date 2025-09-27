@@ -93,7 +93,7 @@
         <!-- Language switcher in mobile menu -->
         <div class="flex justify-between py-4 items-center border-gray-200">
           <div class="flex items-center">
-            <base-color-mode />
+            <u-color-mode-button />
             <base-language-switcher />
           </div>
           <u-button :to="localePath('/account')" color="primary" size="xs" class="cursor-scale rounded-full py-3 px-6">
@@ -132,7 +132,7 @@
 
         <div class="hidden lg:flex items-center shrink-0 gap-12">
           <div class="flex items-center">
-            <base-color-mode class="hidden lg:flex" />
+            <u-color-mode-button class="hidden lg:flex" />
             <base-language-switcher class="hidden lg:flex" />
           </div>
 

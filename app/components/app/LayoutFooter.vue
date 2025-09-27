@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="w-full text-sm text-white bg-primary-600 dark:bg-neutral-950/80 bg-[url('/images/shapes/bl10.webp')] bg-no-repeat"
+    class="w-full text-sm text-white bg-primary-950 bg-[url('/images/shapes/bl10.webp')] bg-no-repeat"
   >
     <u-container>
       <div class="mx-auto max-w-xl py-12 md:py-24">
@@ -18,7 +18,7 @@
         </div>
       </div>
     </u-container>
-    <div class="bg-primary-700 dark:bg-neutral-950">
+    <div class="bg-primary-900">
       <u-container>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 py-6 md:py-12 rounded-3xl">
           <!-- Left: Logo & social -->
