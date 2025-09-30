@@ -1,13 +1,18 @@
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-
 export function useDirection() {
-  const { t, localeProperties } = useI18n();
-  const isRTL = computed(() => localeProperties.value.dir === 'rtl');
+    const nuxtApp = tryUseNuxtApp()
 
-  return {
-    localeProperties,
-    t,
-    isRTL,
-  };
+    if (!nuxtApp) {
+        throw new Error('useDirection must be called within a Vue component or Nuxt context')
+    }
+
+    const { t, locale } = useI18n();
+
+    const isRTL = computed(() => {
+        return locale.value === 'ar'
+    })
+
+    return {
+        t,
+        isRTL,
+    }
 }

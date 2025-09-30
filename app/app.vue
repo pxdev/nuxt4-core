@@ -1,18 +1,30 @@
 <script setup>
 import * as locales from '@nuxt/ui/locale';
 
-const { locale } = useI18n();
+const {locale} = useI18n();
 
- </script>
+const lang = computed(() => locales[locale.value].code);
+const dir = computed(() => locales[locale.value].dir);
+
+useHead({
+  meta: [
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+  ],
+  htmlAttrs: {
+    lang,
+    dir,
+  },
+})
+</script>
 
 <template>
-  <nuxt-layout>
-    <base-network />
-    <nuxt-loading-indicator color="#00dc82" :height="5" />
-    <u-app :locale="locales[locale]">
-      <NuxtPage />
-    </u-app>
-  </nuxt-layout>
+  <u-app :locale="locales[locale]">
+    <nuxt-layout>
+      <NuxtPage/>
+    </nuxt-layout>
+  </u-app>
 </template>
 
-<style></style>
+<style>
+
+</style>
