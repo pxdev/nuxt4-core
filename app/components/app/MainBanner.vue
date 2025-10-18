@@ -26,30 +26,16 @@
             </header>
           </parallax-scroll>
         </section>
-        <aside class="flex items-end justify-center relative h-full flex-1 order-2 lg:order-2">
+        <aside class="flex relative h-full flex-1 order-2 lg:order-2">
           <rotating-text
             class="absolute left-4 bottom-4 md:left-6 md:bottom-6 lg:left-8 lg:bottom-8 z-20 scale-75 md:scale-90 lg:scale-100"
           />
-          <div
-            class="experience bg-white text-primary-500 text-center rounded-xl absolute bottom-1/4 right-0 p-2 md:p-3 lg:p-4 z-10 shadow-xl shadow-primary-500/5 scale-75 md:scale-90 lg:scale-100"
-          >
-            <p class="text-2xl md:text-3xl lg:text-4xl font-bold">
-              <count-up :to="28" :from="0" :duration="1000" />
-              +
-            </p>
-            <p class="text-xs md:text-sm">Years of Experience</p>
-          </div>
-          <div
-            v-motion="createAnimationClipReveal('bottom', { delay: 0, duration: 500 })"
-            :speed="100"
-            class="w-3/4 md:w-4/5 lg:w-full mx-auto lg:mx-0 h-full flex items-end"
-          >
-            <nuxt-img
-              src="/images/banners/hero-img_male.png"
-              fit="cover"
-              class="will-change-transform w-full h-auto object-cover"
-            />
-          </div>
+
+          <nuxt-img 
+              src="/images/banners/student_1.png"
+
+              class="will-change-transform rounded-full border-8 border-white"
+          />
         </aside>
       </article>
     </u-container>

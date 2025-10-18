@@ -11,7 +11,7 @@
 
     <u-popover>
       <u-button class="text-sm flex gap-1 items-center" color="neutral"  size="xl" variant="ghost">
-        <icon class="w-5 h-5" name="hugeicons:language-circle" />
+        <icon class="w-5 h-5" name="hugeicons:globe-02" />
        </u-button>
 
       <template #content>

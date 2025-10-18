@@ -1,36 +1,38 @@
 <script setup>
+import {z} from 'zod';
 
-const router = useRouter();
+const schema = z.object({
+  email: z.string().trim().email('Enter a valid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters')
+});
 
-const email = ref('');
-const password = ref('');
-const error = ref(null);
+const state = reactive({
+  email: '',
+  password: ''
+});
+
+const errorMessage = ref('');
 const isLoading = ref(false);
-//
-// // Redirect if already logged in
-// watchEffect(() => {
-//   if (status.value === 'authenticated') {
-//     router.push('/');
-//   }
-// });
 
-async function handleLogin() {
-  error.value = null;
+async function handleLogin(event) {
+  errorMessage.value = '';
+
   isLoading.value = true;
 
+  const { email, password } = event.data;
+
   try {
-    const response = await $fetch('/api/auth/login', {
+    await $fetch('/api/auth/login', {
       method: 'POST',
       body: {
-        email: email.value,
-        password: password.value
+        email,
+        password
       }
     });
 
-    // Refresh auth state
     await navigateTo('/', { replace: true });
   } catch (err) {
-    error.value = err.data?.message || 'Login failed. Please try again.';
+    errorMessage.value = err?.data?.message || err?.message || 'Login failed. Please try again.';
   } finally {
     isLoading.value = false;
   }
@@ -38,71 +40,57 @@ async function handleLogin() {
 </script>
 
 <template>
-  <div class="login-container">
-    <div class="auth-form-wrapper">
-      <h1 class="text-2xl font-bold mb-6">Login</h1>
-
-      <form @submit.prevent="handleLogin" class="auth-form">
-        <div v-if="error" class="error-message mb-4 p-3 bg-red-100 text-red-700 rounded">
-          {{ error }}
+  <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
+    <u-card class="w-full max-w-md shadow-lg">
+      <template #header>
+        <div class="space-y-1">
+          <h1 class="text-xl font-semibold">Welcome back</h1>
+      <p class="text-sm text-gray-500">Sign in to continue to your account.</p>
         </div>
+      </template>
 
-        <div class="form-group mb-4">
-          <label for="email" class="block mb-2">Email</label>
-          <input
-            id="email"
-            v-model="email"
+      <u-form :state="state" :schema="schema" class="space-y-5" @submit.prevent="handleLogin">
+        <u-alert
+          v-if="errorMessage"
+          color="red"
+          variant="soft"
+          icon="i-heroicons-exclamation-triangle"
+          :title="errorMessage"
+        />
+
+        <u-form-field label="Email" name="email">
+          <u-input
+v-model="state.email"
+            class="w-full"
             type="email"
-             class="w-full p-2 border rounded"
-            placeholder="your@email.com"
+            autocomplete="email"
+            placeholder="you@example.com"
           />
-        </div>
+        </u-form-field>
 
-        <div class="form-group mb-4">
-          <label for="password" class="block mb-2">Password</label>
-          <input
-            id="password"
-            v-model="password"
+        <u-form-field label="Password" name="password">
+          <u-input
+v-model="state.password"
+            class="w-full"
             type="password"
-             class="w-full p-2 border rounded"
+            autocomplete="current-password"
             placeholder="********"
           />
-        </div>
+        </u-form-field>
 
-        <button
-          type="submit"
-          class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
-          :disabled="isLoading"
-        >
-          {{ isLoading ? 'Logging in...' : 'Login' }}
-        </button>
+        <UButton type="submit" color="primary" block :loading="isLoading" :disabled="isLoading">
+          Login
+        </UButton>
+      </u-form>
 
-        <div class="text-center mt-4">
-          Don't have an account? <NuxtLink to="/app/pages/auth/register" class="text-blue-600">Register</NuxtLink>
-        </div>
-      </form>
-    </div>
+      <template #footer>
+        <p class="text-center text-sm text-gray-500">
+          Don't have an account?
+          <NuxtLink to="/auth/register" class="font-medium text-blue-600 hover:underline">
+            Register
+          </NuxtLink>
+        </p>
+      </template>
+    </u-card>
   </div>
 </template>
-
-
-
-<style scoped>
-.login-container {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.auth-form-wrapper {
-  width: 100%;
-  max-width: 400px;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: white;
-}
-</style>
-

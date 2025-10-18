@@ -15,14 +15,12 @@ useHead({
 </script>
 
 <template>
-  <Html class="h-full text-primary-700 text-lg font-noto">
+  <Html class="h-full text-lg font-noto">
   <layout-header/>
-
   <div>
      <slot/>
   </div>
-  <layout-footer/>
-  </Html>
+   </Html>
 </template>
 
 <style>

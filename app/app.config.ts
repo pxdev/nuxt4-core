@@ -1,9 +1,9 @@
 export default defineAppConfig({
     ui: {
         colors: {
-            primary: 'boston-blue',
-            secondary: 'east-bay',
-            neutral: 'slate',
+            primary: 'tickle-me-pink',
+            secondary: 'buttercup',
+            neutral: 'gray',
         },
 
         container: {
@@ -49,7 +49,7 @@ export default defineAppConfig({
 
         button: {
             base: [
-                'cursor-pointer'
+                'cursor-pointer text-black'
             ],
             variants: {
                 size: {
