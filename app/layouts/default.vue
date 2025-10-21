@@ -15,7 +15,7 @@ useHead({
 </script>
 
 <template>
-  <Html class="h-full text-lg font-noto">
+  <Html class="h-full text-lg font-poppins">
   <layout-header/>
   <div>
      <slot/>

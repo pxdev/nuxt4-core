@@ -19,7 +19,7 @@ async function handleLogin(event) {
 
   isLoading.value = true;
 
-  const { email, password } = event.data;
+  const {email, password} = event.data;
 
   try {
     await $fetch('/api/auth/login', {
@@ -30,13 +30,16 @@ async function handleLogin(event) {
       }
     });
 
-    await navigateTo('/', { replace: true });
+    await navigateTo('/', {replace: true});
   } catch (err) {
     errorMessage.value = err?.data?.message || err?.message || 'Login failed. Please try again.';
   } finally {
     isLoading.value = false;
   }
 }
+
+
+
 </script>
 
 <template>
@@ -44,51 +47,53 @@ async function handleLogin(event) {
     <u-card class="w-full max-w-md shadow-lg">
       <template #header>
         <div class="space-y-1">
-          <h1 class="text-xl font-semibold">Welcome back</h1>
-      <p class="text-sm text-gray-500">Sign in to continue to your account.</p>
+          <h1 class="text-2xl font-semibold">Welcome back</h1>
+          <p class="text-sm">Sign in to continue to your account.</p>
         </div>
       </template>
 
       <u-form :state="state" :schema="schema" class="space-y-5" @submit.prevent="handleLogin">
         <u-alert
-          v-if="errorMessage"
-          color="red"
-          variant="soft"
-          icon="i-heroicons-exclamation-triangle"
-          :title="errorMessage"
+            v-if="errorMessage"
+            color="red"
+            variant="soft"
+            icon="i-heroicons-exclamation-triangle"
+            :title="errorMessage"
         />
 
         <u-form-field label="Email" name="email">
           <u-input
-v-model="state.email"
-            class="w-full"
-            type="email"
-            autocomplete="email"
-            placeholder="you@example.com"
+              v-model="state.email"
+              class="w-full"
+              size="xl"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
           />
         </u-form-field>
 
         <u-form-field label="Password" name="password">
           <u-input
-v-model="state.password"
-            class="w-full"
-            type="password"
-            autocomplete="current-password"
-            placeholder="********"
+              v-model="state.password"
+              class="w-full"
+              type="password"
+              size="xl"
+              autocomplete="current-password"
+              placeholder="********"
           />
         </u-form-field>
 
-        <UButton type="submit" color="primary" block :loading="isLoading" :disabled="isLoading">
+        <u-button size="xl" type="submit" color="primary" block :loading="isLoading" :disabled="isLoading">
           Login
-        </UButton>
+        </u-button>
       </u-form>
 
       <template #footer>
-        <p class="text-center text-sm text-gray-500">
+        <p class="text-center text-sm ">
           Don't have an account?
-          <NuxtLink to="/auth/register" class="font-medium text-blue-600 hover:underline">
+          <nuxt-link to="/auth/register" class="font-medium text-primary hover:underline">
             Register
-          </NuxtLink>
+          </nuxt-link>
         </p>
       </template>
     </u-card>

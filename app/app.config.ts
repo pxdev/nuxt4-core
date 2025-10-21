@@ -10,19 +10,6 @@ export default defineAppConfig({
             base: 'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8',
         },
 
-        inputTags: {
-            variants: {
-                size: {
-                    xl: {
-                        base: 'py-3.5 px-3 min-h-[52px] text-sm gap-2',
-                        leadingIcon: 'size-5',
-                        trailingIcon: 'size-5',
-                        itemDeleteIcon: 'size-3'
-                    }
-                },
-            },
-
-        },
 
         input: {
             variants: {

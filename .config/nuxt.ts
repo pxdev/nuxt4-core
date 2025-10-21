@@ -63,14 +63,9 @@ export default defineNuxtConfig({
                 name: 'English',
                 file: 'en.js',
             },
-            {
-                code: 'ar',
-                iso: 'ar-SA',
-                flag: 'flag:sa-4x3',
-                dir: 'rtl',
-                name: 'Arabic',
-                file: 'ar.js',
-            },
         ],
     },
+    ui: {
+        colorMode: false
+    }
 })

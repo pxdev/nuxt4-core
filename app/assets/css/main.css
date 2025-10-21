@@ -3,9 +3,8 @@
 
 @theme static {
 
-    --font-primary: 'Readex Pro', sans-serif;
+    --font-primary: 'poppins', sans-serif;
     --ui-container: 1640px;
-    --ui-text-highlighted: var(--color-east-bay-500) ;
 
     --text-tiny: 0.625rem;
 
@@ -42,4 +41,5 @@
 body {
     background: #f9fafc;
     font-family: var(--font-primary);
+
 }
