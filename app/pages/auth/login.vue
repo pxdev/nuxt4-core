@@ -1,5 +1,7 @@
 <script setup>
-import {z} from 'zod';
+import {z} from "zod"
+
+const {session, openInPopup} = useUserSession()
 
 const schema = z.object({
   email: z.string().trim().email('Enter a valid email address'),
@@ -39,11 +41,12 @@ async function handleLogin(event) {
 }
 
 
-
 </script>
 
 <template>
   <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
+    <debug>{{session}}</debug>
+
     <u-card class="w-full max-w-md shadow-lg">
       <template #header>
         <div class="space-y-1">
@@ -51,6 +54,16 @@ async function handleLogin(event) {
           <p class="text-sm">Sign in to continue to your account.</p>
         </div>
       </template>
+
+
+      <div class="pb-8 pt-4">
+        <u-button
+            class="w-full" icon="material-icon-theme:google" color="neutral" size="xl" variant="outline"
+            @click="openInPopup('/auth/google')">Login With Google
+        </u-button>
+      </div>
+
+      <u-separator label="OR" class="mb-6"/>
 
       <u-form :state="state" :schema="schema" class="space-y-5" @submit.prevent="handleLogin">
         <u-alert

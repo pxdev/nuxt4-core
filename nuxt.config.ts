@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import {APP_INFO} from "../shared/utils/site";
+import {APP_INFO} from "./shared/utils/site";
 
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
@@ -22,17 +22,24 @@ export default defineNuxtConfig({
         }
     },
     modules: [
-      '@nuxt/eslint',
-      '@nuxt/ui',
-      '@vueuse/nuxt',
-      "nuxt-auth-utils",
-      '@nuxtjs/i18n',
-      "@nuxt/fonts",
-      "@nuxt/icon",
-      '@nuxt/image',
-      '@vueuse/motion/nuxt',
+        '@nuxt/eslint',
+        '@nuxt/ui',
+        '@vueuse/nuxt',
+        "nuxt-auth-utils",
+        '@nuxtjs/i18n',
+        "@nuxt/fonts",
+        "@nuxt/icon",
+        '@nuxt/image',
+        '@vueuse/motion/nuxt',
     ],
     runtimeConfig: {
+        oauth: {
+            google: {
+                clientId: '',
+                clientSecret: '',
+                redirectURL: 'http://localhost:5173/auth/google'
+            }
+        },
         secure: {
             salt: ""
         }
@@ -67,5 +74,13 @@ export default defineNuxtConfig({
     },
     ui: {
         colorMode: false
-    }
+    },
+    fonts: {
+        families: [
+            { name: "Rubik", provider: "google", global: true, weights: [400, 500, 600, 700] }
+        ],
+        experimental: {
+            disableLocalFallbacks: true
+        }
+    },
 })
