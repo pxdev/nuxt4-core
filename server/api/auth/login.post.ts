@@ -1,5 +1,4 @@
-// filepath: /Users/aamin/Development/realestate/app/server/api/auth/login.post.ts
-import { eq } from "drizzle-orm";
+ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { useDB, tables } from "../../utils/db";
 

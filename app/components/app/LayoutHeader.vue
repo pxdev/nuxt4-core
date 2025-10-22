@@ -1,7 +1,7 @@
 <script setup>
 import {useScroll} from '@vueuse/core'
+import ProfileMenu from "~/components/app/ProfileMenu.vue";
 
-const {loggedIn, clear, session, fetch} = useUserSession()
 // ===============================
 // Navigation
 // ===============================
@@ -34,37 +34,7 @@ const headerClasses = computed(() => [
   isHeaderVisible.value ? 'translate-y-0' : '-translate-y-full',
 ])
 
-// ===============================
-// Auth Handling
-// ===============================
-const isAuthLoading = ref(false)
 
-
-const handleAuthAction = async () => {
-  isAuthLoading.value = true
-  try {
-    if (loggedIn.value) {
-      await clear() // logout
-      await fetch() // refresh session state
-    } else {
-      await navigateTo('/auth/login')
-      await fetch()
-    }
-  } catch (e) {
-    console.error('Auth error:', e)
-  } finally {
-    isAuthLoading.value = false
-  }
-}
-
-onMounted(async () => {
-  await fetch()
-})
-
-
-watch(() => useRoute().fullPath, async () => {
-  await fetch()
-})
 
 const handleNavClick = () => (mobileMenuOpen.value = false)
 
@@ -102,14 +72,7 @@ const handleNavClick = () => (mobileMenuOpen.value = false)
         <div class="flex justify-between items-center py-4 border-t border-gray-200">
 
 
-          <u-button
-              color="primary"
-              size="xs"
-              class="rounded-full py-2 px-5"
-              @click="handleAuthAction"
-          >
-            {{ loggedIn ? 'My Account' : 'Students Login' }}
-          </u-button>
+
         </div>
       </div>
     </template>
@@ -133,15 +96,9 @@ const handleNavClick = () => (mobileMenuOpen.value = false)
         <!-- Actions -->
         <div class="hidden lg:flex items-center gap-4">
 
+          <profile-menu />
 
-          <u-button
-              color="primary"
-              size="xl"
-              class="rounded-full py-3 px-6"
-              @click="handleAuthAction"
-          >
-            {{ loggedIn ? 'My Account' : 'Students Login' }}
-          </u-button>
+
         </div>
 
         <!-- Mobile toggle -->

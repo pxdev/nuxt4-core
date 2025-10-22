@@ -10,6 +10,11 @@
         class="absolute bottom-10 left-0 opacity-60 w-48"
         alt=""
     />
+    <nuxt-img
+        src="/images/shapes/islamic_shape_1.png"
+        class="absolute top-10 left-1/4 opacity-30 w-48"
+        alt=""
+    />
 
     <u-container class="w-full">
       <article class="flex items-center h-full">
@@ -18,19 +23,19 @@
           <header class="flex flex-col space-y-4">
             <div class="">
               <p class="text-base font-bold">Your Journey to</p>
-              <h1 class="text-6xl tracking-tight font-black">Arabic and Qur’anic <icon class="w-14 h-14 text-primary inline-flex" name="tabler:flare-filled" /></h1>
-              <h2 class="text-6xl tracking-tight font-black">Fluency</h2>
+              <h2 class="text-5xl tracking-tight font-black">Arabic and Qur’anic <icon class="w-14 h-14 text-primary inline-flex" name="tabler:flare-filled" /></h2>
+              <h2 class="text-5xl tracking-tight font-black">Fluency</h2>
             </div>
 
             <p class="text-base">Interactive Arabic and Tajweed courses tailored for beginners. Learn
               pronunciation, grammar, and Qur’anic recitation the easy way — from the alphabet to perfect Tajweed.</p>
 
-            <arrow-button
-                size="h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14"
-                class="text-lg md:text-xl lg:text-2xl gap-2 md:gap-3 lg:gap-4"
-            >
-              Start Learning
-            </arrow-button>
+            <div class="flex items-center gap-4 mt-4">
+              <fill-arrow-button class="inline-flex" size="h-12 w-12">
+                Start Learning
+              </fill-arrow-button>
+
+            </div>
           </header>
         </section>
 
@@ -42,13 +47,13 @@
 
           <nuxt-img
               src="/images/banners/student_1.png"
-              class="will-change-transform rounded-full border-8 h-auto w-[300px] border-white"
+              class="will-change-transform rounded-full border-8 h-auto w-[260px] border-white"
               alt=""
           />
 
           <nuxt-img
               src="/images/banners/student_2.png"
-              class="will-change-transform rounded-full border-8 h-auto w-[300px] translate-y-20 border-white"
+              class="will-change-transform rounded-full border-8 h-auto w-[260px] translate-y-20 border-white"
               alt=""
           />
 
