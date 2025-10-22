@@ -3,13 +3,8 @@ export const handleOAuth = async (event: H3Event, userOptions: { id: string, ema
     const DB = useDB();
     const today = Date.now();
     const session = await getUserSession(event);
-    console.log("[auth] handleOAuth start", { provider, hasSession: Boolean(session.user), id, email });
     try {
         if (!session.user) {
-            if (!id || !email) {
-                return sendRedirect(event, "/login?error=signin_auth_error");
-            }
-
             const checkConnection = await DB.select({
                 id: tables.socialConnections.id,
                 userId: tables.socialConnections.userId
@@ -17,8 +12,7 @@ export const handleOAuth = async (event: H3Event, userOptions: { id: string, ema
                 .where(and(eq(tables.socialConnections.providerId, id), eq(tables.socialConnections.provider, provider)))
                 .get();
             let authUser;
-
-            if (checkConnection?.userId) {
+            if (!checkConnection?.userId) {
                 authUser = await DB.select({
                     id: tables.users.id,
                     name: tables.users.name,
@@ -29,67 +23,37 @@ export const handleOAuth = async (event: H3Event, userOptions: { id: string, ema
                     aboutMe: tables.users.aboutMe,
                     createdAt: tables.users.createdAt,
                     updatedAt: tables.users.updatedAt
-                }).from(tables.users).where(eq(tables.users.id, checkConnection.userId)).get();
-            }
-            else {
-                const existingUser = await DB.select({
-                    id: tables.users.id,
-                    name: tables.users.name,
-                    username: tables.users.username,
-                    email: tables.users.email,
-                    birthday: tables.users.birthday,
-                    country: tables.users.country,
-                    aboutMe: tables.users.aboutMe,
-                    createdAt: tables.users.createdAt,
-                    updatedAt: tables.users.updatedAt
-                }).from(tables.users).where(eq(tables.users.email, email)).get();
+                }).from(tables.users).where(and(eq(tables.users.email, email))).get();
 
-                if (existingUser && email === existingUser.email) {
-                    authUser = existingUser;
+                if (!userOptions) return sendRedirect(event, "/login?error=signin_auth_error");
+
+                if (!checkConnection && authUser && email === authUser.email) {
+                    return sendRedirect(event, "/login?error=email_already_registered");
                 }
-                else {
-                    const newUser = await DB.insert(tables.users).values({
+
+                if (!authUser?.id) {
+                    authUser = await DB.insert(tables.users).values({
                         email,
                         createdAt: today,
                         updatedAt: today
-                    }).onConflictDoNothing().returning({
-                        id: tables.users.id,
-                        name: tables.users.name,
-                        username: tables.users.username,
-                        email: tables.users.email,
-                        birthday: tables.users.birthday,
-                        country: tables.users.country,
-                        aboutMe: tables.users.aboutMe,
-                        createdAt: tables.users.createdAt,
-                        updatedAt: tables.users.updatedAt
-                    }).get();
-
-                    authUser = newUser ?? await DB.select({
-                        id: tables.users.id,
-                        name: tables.users.name,
-                        username: tables.users.username,
-                        email: tables.users.email,
-                        birthday: tables.users.birthday,
-                        country: tables.users.country,
-                        aboutMe: tables.users.aboutMe,
-                        createdAt: tables.users.createdAt,
-                        updatedAt: tables.users.updatedAt
-                    }).from(tables.users).where(eq(tables.users.email, email)).get();
-                }
-
-                if (!authUser) {
-                    return sendRedirect(event, "/login?error=signin_auth_error");
-                }
-
-                const connection = await createConnection(authUser.id, provider, id);
-                if (!connection?.provider) console.error(`${provider} connection failed to save for ${email}`);
-                if (existingUser) {
-                    console.log(`[auth] ${provider} OAuth linked existing account`, { email, userId: authUser.id });
-                }
-                else {
-                    console.log(`[auth] ${provider} OAuth created new account`, { email, userId: authUser.id });
+                    }).onConflictDoNothing().returning().get();
+                    if (!authUser) return sendRedirect(event, "/login?error=signin_auth_error");
+                    const connection = await createConnection(authUser.id, provider, id);
+                    if (!connection?.provider) console.info(`${provider} connection failed to save`);
                 }
             }
+
+            authUser = authUser ? authUser : await DB.select({
+                id: tables.users.id,
+                name: tables.users.name,
+                username: tables.users.username,
+                email: tables.users.email,
+                birthday: tables.users.birthday,
+                country: tables.users.country,
+                aboutMe: tables.users.aboutMe,
+                createdAt: tables.users.createdAt,
+                updatedAt: tables.users.updatedAt
+            }).from(tables.users).where(and(eq(tables.users.id, checkConnection!.userId!))).get();
 
             if (!authUser) return sendRedirect(event, "/login?error=signin_auth_error");
 
@@ -101,7 +65,7 @@ export const handleOAuth = async (event: H3Event, userOptions: { id: string, ema
                     hash: userHash
                 }
             });
-            console.log("[auth] user logged in", { email, userId: authUser.id });
+            console.info("User logged in: ", email);
             return sendRedirect(event, "/");
         }
         else {
@@ -129,12 +93,11 @@ export const handleOAuth = async (event: H3Event, userOptions: { id: string, ema
                     hash: userHash
                 }
             });
-            console.log("[auth] linked provider for existing session", { email: session.user.email, provider });
             return sendRedirect(event, `/u/${session.user.username}/settings`);
         }
     }
     catch (error) {
-        console.error("[auth] handleOAuth error", error);
+        console.info(error);
         clearUserSession(event);
         return sendRedirect(event, "/login?error=signin_auth_error");
     }
