@@ -37,7 +37,6 @@ export default defineNuxtConfig({
             google: {
                 clientId: '',
                 clientSecret: '',
-                redirectURL: 'http://localhost:5173/auth/google'
             }
         },
         secure: {

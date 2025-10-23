@@ -1,7 +1,7 @@
 <script setup>
 import {z} from "zod"
 
-const {session, openInPopup} = useUserSession()
+const {openInPopup, loggedIn, fetch} = useUserSession()
 
 const schema = z.object({
   email: z.string().trim().email('Enter a valid email address'),
@@ -16,13 +16,12 @@ const state = reactive({
 const errorMessage = ref('');
 const isLoading = ref(false);
 
-async function handleLogin(event) {
+const handleLogin = async (event) => {
   errorMessage.value = '';
 
   isLoading.value = true;
 
   const {email, password} = event.data;
-
   try {
     await $fetch('/api/auth/login', {
       method: 'POST',
@@ -31,8 +30,7 @@ async function handleLogin(event) {
         password
       }
     });
-
-    await navigateTo('/', {replace: true});
+    await fetch()
   } catch (err) {
     errorMessage.value = err?.data?.message || err?.message || 'Login failed. Please try again.';
   } finally {
@@ -41,12 +39,19 @@ async function handleLogin(event) {
 }
 
 
+watch(loggedIn, (isLogged) => {
+  if (isLogged) {
+    navigateTo('/account', {replace: true})
+  }
+}, {immediate: true})
+
+
 </script>
 
 <template>
   <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
 
-    <u-card class="w-full max-w-md shadow-lg">
+    <u-card class="w-full max-w-md">
       <template #header>
         <div class="space-y-1">
           <h1 class="text-2xl font-semibold">Welcome back</h1>
@@ -57,7 +62,7 @@ async function handleLogin(event) {
 
       <div class="pb-8 pt-4">
         <u-button
-            class="w-full" icon="material-icon-theme:google" color="neutral" size="xl" variant="outline"
+            class="w-full" icon="material-icon-theme:google" block color="neutral" size="xl" variant="outline"
             @click="openInPopup('/auth/google')">Login With Google
         </u-button>
       </div>

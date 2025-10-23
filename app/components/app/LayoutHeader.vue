@@ -1,6 +1,5 @@
 <script setup>
-import {useScroll} from '@vueuse/core'
-import ProfileMenu from "~/components/app/ProfileMenu.vue";
+
 
 // ===============================
 // Navigation
@@ -8,32 +7,18 @@ import ProfileMenu from "~/components/app/ProfileMenu.vue";
 const navLinks = [
   {id: 1, label: ('Home'), to: ('/')},
   {id: 2, label: ('About Us'), to: '/about'},
-  {id: 3, label: ('Courses'), to: '/courses'},
+  {id: 3, label: ('Arabic Courses'),
+    children: [
+      {id: 31, label: ('Beginner'), to: '/'},
+      {id: 32, label: ('Intermediate'), to: '/'},
+      {id: 33, label: ('Advanced'), to: '/'},
+    ]
+  },
   {id: 4, label: ('Blog'), to: '/blog'},
   {id: 5, label: ('Contact Us'), to: '/contact'},
 ]
 
 const mobileMenuOpen = ref(false)
-
-// ===============================
-// Scroll + Header Visibility
-// ===============================
-const {y: scrollY} = useScroll(window, {throttle: 100})
-const lastScroll = ref(0)
-const isHeaderVisible = ref(true)
-
-watch(scrollY, (newY) => {
-  const isAtTop = newY < 200
-  const isScrollingUp = newY < lastScroll.value
-  isHeaderVisible.value = isAtTop || isScrollingUp
-  lastScroll.value = newY
-})
-
-const headerClasses = computed(() => [
-  'transition duration-500 fixed inset-x-0 top-0 z-50',
-  isHeaderVisible.value ? 'translate-y-0' : '-translate-y-full',
-])
-
 
 
 const handleNavClick = () => (mobileMenuOpen.value = false)
@@ -78,10 +63,7 @@ const handleNavClick = () => (mobileMenuOpen.value = false)
     </template>
   </u-slideover>
   <header
-      :class="[
-      'bg-white/90 backdrop-blur',
-      headerClasses,
-    ]"
+      class="bg-white border-b border-gray-200"
   >
     <u-container>
       <div class="flex justify-between items-center py-4">

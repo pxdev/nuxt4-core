@@ -3,7 +3,7 @@ export const handleOAuth = async (
     userOptions: { id: string; email: string; name: string },
     provider: string
 ) => {
-    const { id: providerId, email, name } = userOptions || {};
+    const {id: providerId, email, name} = userOptions || {};
     const DB = useDB();
     const today = Date.now();
     const session = await getUserSession(event);
@@ -109,7 +109,7 @@ export const handleOAuth = async (
                 return sendRedirect(event, "/login?error=signin_auth_error");
             }
 
-            const { secure } = useRuntimeConfig(event);
+            const {secure} = useRuntimeConfig(event);
             const userHash = await hash(String(authUser.id), secure.salt);
 
             await setUserSession(event, {
@@ -119,8 +119,7 @@ export const handleOAuth = async (
                 },
             });
 
-            console.info("User logged in:", email);
-            return sendRedirect(event, "/");
+            return sendRedirect(event, "/account/callback");
         }
 
         // ─────────────── Active session (Attach or Validate Connection)
@@ -146,7 +145,7 @@ export const handleOAuth = async (
             }
         }
 
-        const { secure } = useRuntimeConfig(event);
+        const {secure} = useRuntimeConfig(event);
         const userHash = await hash(String(session.user.id), secure.salt);
 
         await setUserSession(event, {
@@ -156,7 +155,7 @@ export const handleOAuth = async (
             },
         });
 
-        return sendRedirect(event, `/u/${session.user.username}/settings`);
+        return sendRedirect(event, `/account/callback`);
     } catch (error) {
         console.error(error);
         await clearUserSession(event);

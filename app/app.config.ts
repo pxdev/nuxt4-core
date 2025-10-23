@@ -55,17 +55,6 @@ export default defineAppConfig({
             },
         },
 
-        card: {
-            variants: {
-                variant: {
-                    outline: {
-                        root: 'bg-white ring-0 shadow-[0_0_8px_rgba(0,0,0,0.05)]',
-                    },
-                }
-            },
-
-        },
-
         dropdownMenu: {
             slots: {
                 content: 'font-primary',
