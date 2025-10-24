@@ -18,7 +18,8 @@
     "db:migrate": "drizzle-kit migrate --config=.config/drizzle.ts",
     "db:push": "drizzle-kit push --config=.config/drizzle.ts",
     "db:pull": "drizzle-kit pull --config=.config/drizzle.ts",
-    "db:studio": "drizzle-kit studio --config=.config/drizzle.ts"
+    "db:studio": "drizzle-kit studio --config=.config/drizzle.ts",
+    "start": "npm run db:migrate && node .output/server/index.mjs"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.9.0",
