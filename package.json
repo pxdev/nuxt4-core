@@ -14,12 +14,11 @@
     "lint:eslint": "eslint --config .config/eslint.mjs",
     "lint:eslint:inspect": "npx @eslint/config-inspector --config .config/eslint.mjs",
     "lint:stylelint": "stylelint \"**/*.{css,scss}\" --config .config/stylelint.json",
-    "db:generate": "drizzle-kit generate --config=.config/drizzle.ts",
-    "db:migrate": "drizzle-kit migrate --config=.config/drizzle.ts",
-    "db:push": "drizzle-kit push --config=.config/drizzle.ts",
-    "db:pull": "drizzle-kit pull --config=.config/drizzle.ts",
-    "db:studio": "drizzle-kit studio --config=.config/drizzle.ts",
-    "start": "npm run db:migrate && node .output/server/index.mjs"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:pull": "drizzle-kit pull",
+    "db:studio": "drizzle-kit studio",
   },
   "dependencies": {
     "@nuxt/eslint": "^1.9.0",
