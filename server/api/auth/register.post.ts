@@ -1,7 +1,5 @@
-// filepath: /Users/aamin/Development/realestate/app/server/api/auth/register.post.ts
-import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
-import { useDB, tables } from "../../utils/db";
+import { normalizeBigInt, now, useDB } from "../../utils/db";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -18,10 +16,10 @@ export default defineEventHandler(async (event) => {
 
     // Check if user already exists
     const db = useDB();
-    const existingUser = await db.select({ id: tables.users.id })
-      .from(tables.users)
-      .where(eq(tables.users.email, email))
-      .get();
+    const existingUser = await db.user.findUnique({
+      where: { email },
+      select: { id: true }
+    });
 
     if (existingUser) {
       throw createError({
@@ -32,10 +30,15 @@ export default defineEventHandler(async (event) => {
 
     // Check if username is taken (if provided)
     if (username) {
-      const existingUsername = await db.select({ id: tables.users.id })
-        .from(tables.users)
-        .where(eq(tables.users.username, username))
-        .get();
+      const existingUsername = await db.user.findFirst({
+        where: {
+          username: {
+            equals: username,
+            mode: "insensitive"
+          }
+        },
+        select: { id: true }
+      });
 
       if (existingUsername) {
         throw createError({
@@ -49,46 +52,41 @@ export default defineEventHandler(async (event) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const now = Date.now();
+    const timestamp = now();
 
-    // Create user
-    const newUser = await db.insert(tables.users)
-      .values({
+    const newUser = await db.user.create({
+      data: {
         name,
         username,
         email,
         password: hashedPassword,
-        createdAt: now,
-        updatedAt: now
-      })
-      .returning({
-        id: tables.users.id,
-        name: tables.users.name,
-        username: tables.users.username,
-        email: tables.users.email,
-        birthday: tables.users.birthday,
-        country: tables.users.country,
-        aboutMe: tables.users.aboutMe,
-        createdAt: tables.users.createdAt,
-        updatedAt: tables.users.updatedAt
-      })
-      .get();
+        createdAt: timestamp,
+        updatedAt: timestamp
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+        birthday: true,
+        country: true,
+        aboutMe: true,
+        avatar: true,
+        createdAt: true,
+        updatedAt: true
+      }
+    });
 
-    if (!newUser) {
-      throw createError({
-        statusCode: 500,
-        message: "Failed to create user"
-      });
-    }
+    const normalizedUser = normalizeBigInt(newUser);
 
     // Create session
     await setUserSession(event, {
-      user: newUser
+      user: normalizedUser
     });
 
     return {
       success: true,
-      user: newUser
+      user: normalizedUser
     };
   } catch (error: any) {
     throw createError({

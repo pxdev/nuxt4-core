@@ -14,11 +14,12 @@
     "lint:eslint": "eslint --config .config/eslint.mjs",
     "lint:eslint:inspect": "npx @eslint/config-inspector --config .config/eslint.mjs",
     "lint:stylelint": "stylelint \"**/*.{css,scss}\" --config .config/stylelint.json",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:pull": "drizzle-kit pull",
-    "db:studio": "drizzle-kit studio"
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx server/database/seed.ts"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.9.0",
@@ -27,23 +28,22 @@
     "@nuxt/image": "^1.11.0",
     "@nuxt/ui": "^4.0.0",
     "@nuxtjs/i18n": "^10.1.0",
+    "@prisma/client": "^6.18.0",
     "@vueuse/motion": "^3.0.3",
     "@vueuse/nuxt": "^13.9.0",
     "bcryptjs": "^3.0.2",
-    "better-sqlite3": "^12.2.0",
     "dotenv": "^17.2.2",
     "eslint": "^9.36.0",
     "nuxt": "4.1.2",
     "nuxt-auth-utils": "^0.5.25",
     "vue": "^3.5.22",
-    "vue-router": "^4.5.1",
-    "drizzle-kit": "^0.31.4",
-    "drizzle-orm": "^0.44.5"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@iconify-json/hugeicons": "^1.2.16",
     "@iconify-json/lucide": "^1.2.68",
-    "@types/better-sqlite3": "^7.6.13",
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "prisma": "^6.18.0",
+    "tsx": "^4.19.1"
   }
 }

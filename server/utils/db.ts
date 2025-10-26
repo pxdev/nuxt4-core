@@ -1,28 +1,74 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
+import { PrismaClient } from "@prisma/client";
 
-import * as schema from "../database/schema";
-
-export { sql, eq, and, or, count, desc, asc, exists, notExists } from "drizzle-orm";
-export type { SQLiteColumn } from "drizzle-orm/sqlite-core";
-
-export const tables = schema;
-
-export const useDB = () => {
-    const dbPath = process.env.DATABASE_URL;
-    const sqlite = new Database(dbPath)
-    return drizzle(sqlite, { schema, casing: 'snake_case' })
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
 }
 
+const prismaClient = globalThis.prisma ?? new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  globalThis.prisma = prismaClient;
+}
+
+export const useDB = () => prismaClient;
+
+export const now = () => BigInt(Date.now());
+
+export const toBigInt = (value?: number | bigint | null) => {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  return typeof value === "bigint" ? value : BigInt(value);
+};
+
+export const normalizeBigInt = <T>(input: T): T => {
+  if (input === null || input === undefined) {
+    return input;
+  }
+
+  if (typeof input === "bigint") {
+    return Number(input) as T;
+  }
+
+  if (Array.isArray(input)) {
+    return input.map((item) => normalizeBigInt(item)) as T;
+  }
+
+  if (typeof input === "object") {
+    const entries = Object.entries(input as Record<string, unknown>).map(([key, value]) => [
+      key,
+      normalizeBigInt(value),
+    ]);
+    return Object.fromEntries(entries) as T;
+  }
+
+  return input;
+};
 
 export const createConnection = async (userId: number, provider: string, providerId: string) => {
-    const DB = useDB();
-    const today = Date.now();
-    return await DB.insert(tables.socialConnections).values({
-        userId,
+  const DB = useDB();
+  const today = now();
+
+  await DB.socialConnection.upsert({
+    where: {
+      provider_providerId: {
         provider,
         providerId: providerId.toString(),
-        createdAt: today,
-        updatedAt: today
-    }).onConflictDoNothing().returning().get();
+      },
+    },
+    update: {
+      userId,
+      updatedAt: today,
+    },
+    create: {
+      userId,
+      provider,
+      providerId: providerId.toString(),
+      createdAt: today,
+      updatedAt: today,
+    },
+  });
+
+  return { provider, providerId, userId };
 };

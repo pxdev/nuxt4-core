@@ -1,8 +1,11 @@
+import { normalizeBigInt, useDB } from "../../utils/db";
+
 export default defineEventHandler(async (_event): Promise<Pages[]> => {
         const DB = useDB()
 
-        const query = DB.select().from(tables.pages).orderBy(tables.pages.updatedAt, 'desc')
-        const pagesList = await query.all()
+        const pagesList = await DB.page.findMany({
+            orderBy: { updatedAt: "desc" }
+        })
 
         if (!pagesList || pagesList.length === 0) {
             throw createError({
@@ -12,5 +15,5 @@ export default defineEventHandler(async (_event): Promise<Pages[]> => {
             })
         }
 
-        return pagesList
+        return normalizeBigInt(pagesList)
     })

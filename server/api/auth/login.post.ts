@@ -1,6 +1,5 @@
- import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
-import { useDB, tables } from "../../utils/db";
+import { normalizeBigInt, useDB } from "../../utils/db";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -17,20 +16,22 @@ export default defineEventHandler(async (event) => {
 
     // Get user from database
     const db = useDB();
-    const user = await db.select({
-      id: tables.users.id,
-      name: tables.users.name,
-      username: tables.users.username,
-      email: tables.users.email,
-      password: tables.users.password,
-      birthday: tables.users.birthday,
-      country: tables.users.country,
-      aboutMe: tables.users.aboutMe,
-      createdAt: tables.users.createdAt,
-      updatedAt: tables.users.updatedAt
-    }).from(tables.users)
-      .where(eq(tables.users.email, email))
-      .get();
+    const user = await db.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        email: true,
+        password: true,
+        birthday: true,
+        country: true,
+        aboutMe: true,
+        avatar: true,
+        createdAt: true,
+        updatedAt: true
+      }
+    });
 
     if (!user) {
       throw createError({
@@ -50,13 +51,14 @@ export default defineEventHandler(async (event) => {
 
     // Create session
     const { password: _, ...userWithoutPassword } = user;
+    const normalizedUser = normalizeBigInt(userWithoutPassword);
     await setUserSession(event, {
-      user: userWithoutPassword
+      user: normalizedUser
     });
 
     return {
       success: true,
-      user: userWithoutPassword
+      user: normalizedUser
     };
   } catch (error: any) {
     throw createError({
