@@ -7,7 +7,7 @@
 const navLinks = [
   {id: 1, label: ('Home'), to: ('/')},
   {id: 2, label: ('About Us'), to: '/about'},
-  {id: 3, label: ('Arabic Courses'),
+  {id: 3, label: ('Courses'),
     children: [
       {id: 31, label: ('Beginner'), to: '/'},
       {id: 32, label: ('Intermediate'), to: '/'},
@@ -62,9 +62,7 @@ const handleNavClick = () => (mobileMenuOpen.value = false)
       </div>
     </template>
   </u-slideover>
-  <header
-      class="bg-white border-b border-gray-200"
-  >
+  <header class="sticky top-0 z-50 bg-white">
     <u-container>
       <div class="flex justify-between items-center py-4">
         <!-- Logo -->

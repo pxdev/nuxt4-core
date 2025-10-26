@@ -3,27 +3,24 @@
 </script>
 
 <template>
-  <section class="h-full min-h-svh flex overflow-hidden relative bg-gradient-to-r from-primary/10  to-secondary/5">
-    <gradient-circle class="absolute opacity-80 top-0 left-0"/>
-    <nuxt-img
-        src="/images/shapes/islamic_shape_1.png"
-        class="absolute bottom-10 left-0 opacity-60 w-48"
-        alt=""
-    />
-    <nuxt-img
-        src="/images/shapes/islamic_shape_1.png"
-        class="absolute top-10 left-1/4 opacity-30 w-48"
-        alt=""
-    />
+  <section
+      class="h-full min-h-[calc(100svh-91px)] flex overflow-hidden relative bg-gradient-to-r from-primary/20  to-secondary/20">
+
+
+    <img alt="" src="/images/shapes/islamic_s1.svg" class="absolute w-80 right-10 z-0" >
+    <img alt="" src="/images/shapes/islamic_ornament.svg" class="absolute w-xl opacity-5  bottom-20 inset-x-0" >
+
 
     <u-container class="w-full">
-      <article class="flex items-center h-full">
+      <article class="flex items-center h-full relative">
 
         <section class="h-full w-1/2 flex items-center">
           <header class="flex flex-col space-y-4">
             <div class="">
               <p class="text-base font-bold">Your Journey to</p>
-              <h2 class="text-5xl tracking-tight font-black">Arabic and Qur’anic <icon class="w-14 h-14 text-primary inline-flex" name="tabler:flare-filled" /></h2>
+              <h2 class="text-5xl tracking-tight font-black">Arabic and Qur’anic
+                <icon class="w-14 h-14 text-primary inline-flex" name="tabler:flare-filled"/>
+              </h2>
               <h2 class="text-5xl tracking-tight font-black">Fluency</h2>
             </div>
 
@@ -62,17 +59,10 @@
 
       </article>
     </u-container>
-        <gradient-circle class="absolute opacity-40 bottom-0 right-0 "/>
-    <nuxt-img
-        src="/images/shapes/islamic_shape_1.png"
-        class="absolute bottom-10 right-10 opacity-60 w-48"
-        alt=""
-    />
-    <nuxt-img
-        src="/images/shapes/islamic_shape_1.png"
-        class="absolute bottom-0 opacity-40 right-80 w-48"
-        alt=""
-    />
+
+
+    <div class="clouds w-full absolute bottom-0 bg-[url('/images/clouds.png')] bg-repeat h-32"/>
 
   </section>
 </template>
+

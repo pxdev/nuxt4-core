@@ -3,7 +3,7 @@ export default defineAppConfig({
         colors: {
             primary: 'tickle-me-pink',
             secondary: 'buttercup',
-            neutral: 'gray',
+            neutral: 'neutral',
         },
 
         container: {

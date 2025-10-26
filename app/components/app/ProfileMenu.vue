@@ -16,22 +16,22 @@ watch(() => useRoute().fullPath, async () => {
 
 const items = ref([
   {
-    label: 'Profile',
-    icon: 'i-lucide-user',
-    to: 'account/profile'
+    label: 'Account',
+    icon: 'hugeicons:user-02',
+    to: 'account'
   },
   {
     label: 'Billing',
-    icon: 'i-lucide-credit-card'
+    icon: 'hugeicons:credit-card'
 
   },
   {
     label: 'Settings',
-    icon: 'i-lucide-cog'
+    icon: 'hugeicons:settings-01'
   },
   {
     label: 'Logout',
-    icon: 'i-lucide-power',
+    icon: 'hugeicons:logout-04',
     onClick: async () => {
       await clear()
       await navigateTo('/')
@@ -45,7 +45,7 @@ const items = ref([
 
 <template>
  <div class="">
-  <u-dropdown-menu v-if="loggedIn"
+  <u-dropdown-menu v-if="loggedIn" size="sm"
       arrow
       :items="items"
       :ui="{
