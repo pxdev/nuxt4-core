@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?  @db.VarChar(255)
+  username  String?  @db.VarChar(255)
+  password  String?  @db.Text
+  email     String   @db.VarChar(255)
+  birthday  BigInt?  @db.BigInt
+  country   String?  @db.VarChar(255)
+  aboutMe   String?  @db.Text @map("about_me")
+  avatar    String?  @db.Text
+  createdAt BigInt   @db.BigInt @map("created_at")
+  updatedAt BigInt   @db.BigInt @map("updated_at")
+
+  socialConnections SocialConnection[]
+  pages             Page[]            @relation("AuthorPages")
+  enrollments       UserCourse[]
+
+  @@map("users")
+  @@unique([email], map: "users_email_idx")
+  @@unique([username], map: "users_username_idx")
+}
+
+model SocialConnection {
+  id         Int     @id @default(autoincrement())
+  userId     Int     @map("user_id")
+  provider   String  @db.VarChar(255)
+  providerId String  @db.VarChar(255) @map("provider_id")
+  createdAt  BigInt  @db.BigInt @map("created_at")
+  updatedAt  BigInt  @db.BigInt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("social_connections")
+  @@unique([provider, providerId], map: "social_connections_provider_provider_id_idx")
+}
+
+model Page {
+  id             Int     @id @default(autoincrement())
+  title          String  @db.VarChar(255)
+  slug           String  @db.VarChar(255)
+  authorId       Int?    @map("author_id")
+  content        String  @db.Text
+  createdAt      BigInt  @db.BigInt @map("created_at")
+  updatedAt      BigInt  @db.BigInt @map("updated_at")
+  status         String  @db.VarChar(255)
+  publishedAt    BigInt? @db.BigInt @map("published_at")
+  excerpt        String? @db.Text
+  coverImage     String? @db.Text @map("cover_image")
+  seoTitle       String? @db.VarChar(255) @map("seo_title")
+  seoDescription String? @db.Text @map("seo_description")
+  seoKeywords    String? @db.Text @map("seo_keywords")
+
+  author User? @relation("AuthorPages", fields: [authorId], references: [id])
+
+  @@map("pages")
+  @@unique([slug], map: "pages_slug_idx")
+}
+
+model Course {
+  id              Int             @id @default(autoincrement())
+  title           String          @db.VarChar(255)
+  slug            String          @db.VarChar(255)
+  description     String?         @db.Text
+  thumbnail       String?         @db.Text
+  levelStrategy   String?         @db.VarChar(255) @map("level_strategy")
+  liveRoomLink    String?         @db.Text @map("live_room_link")
+  durationMinutes Int?            @map("duration_minutes")
+  createdAt       BigInt          @db.BigInt @map("created_at")
+  updatedAt       BigInt          @db.BigInt @map("updated_at")
+
+  levels      CourseLevel[]
+  lectures    CourseLecture[]
+  enrollments UserCourse[]
+
+  @@map("courses")
+  @@unique([slug], map: "courses_slug_idx")
+}
+
+model CourseLevel {
+  id               Int             @id @default(autoincrement())
+  courseId         Int             @map("course_id")
+  label            String          @db.VarChar(255)
+  description      String?         @db.Text
+  sortOrder        Int             @map("sort_order")
+  meetingFrequency String?         @db.VarChar(255) @map("meeting_frequency")
+  createdAt        BigInt          @db.BigInt @map("created_at")
+  updatedAt        BigInt          @db.BigInt @map("updated_at")
+
+  course      Course        @relation(fields: [courseId], references: [id])
+  lectures    CourseLecture[]
+  activeUsers UserCourse[]  @relation("ActiveLevel")
+
+  @@map("course_levels")
+}
+
+model CourseLecture {
+  id              Int      @id @default(autoincrement())
+  courseId        Int      @map("course_id")
+  levelId         Int      @map("level_id")
+  title           String   @db.VarChar(255)
+  description     String?  @db.Text
+  sortOrder       Int      @map("sort_order")
+  durationMinutes Int?     @map("duration_minutes")
+  resourceLink    String?  @db.Text @map("resource_link")
+  startsAt        BigInt?  @db.BigInt @map("starts_at")
+  createdAt       BigInt   @db.BigInt @map("created_at")
+  updatedAt       BigInt   @db.BigInt @map("updated_at")
+
+  course Course     @relation(fields: [courseId], references: [id])
+  level  CourseLevel @relation(fields: [levelId], references: [id])
+
+  @@map("course_lectures")
+}
+
+model UserCourse {
+  id                Int        @id @default(autoincrement())
+  userId            Int        @map("user_id")
+  courseId          Int        @map("course_id")
+  activeLevelId     Int?       @map("active_level_id")
+  status            String     @db.VarChar(255)
+  purchaseReference String?    @db.VarChar(255) @map("purchase_reference")
+  purchasedAt       BigInt     @db.BigInt @map("purchased_at")
+  startedAt         BigInt?    @db.BigInt @map("started_at")
+  completedAt       BigInt?    @db.BigInt @map("completed_at")
+  createdAt         BigInt     @db.BigInt @map("created_at")
+  updatedAt         BigInt     @db.BigInt @map("updated_at")
+
+  user        User         @relation(fields: [userId], references: [id])
+  course      Course       @relation(fields: [courseId], references: [id])
+  activeLevel CourseLevel? @relation("ActiveLevel", fields: [activeLevelId], references: [id])
+
+  @@map("user_courses")
+}
