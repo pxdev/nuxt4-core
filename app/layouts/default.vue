@@ -20,6 +20,7 @@ useHead({
   <div>
      <slot/>
   </div>
+  <layout-footer/>
    </Html>
 </template>
 

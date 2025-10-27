@@ -1,23 +1,30 @@
 <template>
   <footer
-    class="w-full text-sm text-white bg-primary-950 bg-[url('/images/shapes/bl10.webp')] bg-no-repeat"
+    class="w-full text-sm text-white bg-white"
   >
-    <u-container>
-      <div class="mx-auto max-w-xl py-12 md:py-24">
-        <div class="text-center space-y-2 mb-6">
-          <h3 class="text-xl sm:text-2xl md:text-3xl">10% Discount for First Appointment!</h3>
-          <p class="text-sm md:text-base">Subscribe to our newsletter</p>
-        </div>
 
-        <div class="w-full flex items-center bg-white border border-primary-50/20 rounded-full p-1">
-          <u-input class="flex-1 mx-2" type="text" variant="none" placeholder="Enter your email" size="lg" />
-          <u-button color="secondary" size="xl" class="shrink-0 rounded-full py-3 px-3 lg:py-4 lg:px-6">
-            <span class="hidden md:block">Subscribe Now</span>
-            <icon name="hugeicons:mail-send-01" class="block md:hidden w-6 h-6" />
-          </u-button>
+
+      <u-container class="relative z-10">
+        <div class="newsletters" />
+        <div class="mx-auto max-w-xl py-12 md:py-24 ">
+          <div class="text-center space-y-2 mb-6">
+            <h3 class="text-xl sm:text-2xl md:text-3xl">10% Discount for First Appointment!</h3>
+            <p class="text-sm md:text-base">Subscribe to our newsletter</p>
+          </div>
+
+          <div class="w-full flex items-center bg-white border border-primary-50/20 rounded-full p-1">
+            <u-input class="flex-1 mx-2" type="text" variant="none" placeholder="Enter your email" size="lg" />
+            <u-button color="secondary" size="xl" class="shrink-0 rounded-full py-3 px-3 lg:py-4 lg:px-6">
+              <span class="hidden md:block">Subscribe Now</span>
+              <icon name="hugeicons:mail-send-01" class="block md:hidden w-6 h-6" />
+            </u-button>
+          </div>
         </div>
-      </div>
-    </u-container>
+      </u-container>
+
+
+
+
     <div class="bg-primary-900">
       <u-container>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 py-6 md:py-12 rounded-3xl">
@@ -117,5 +124,19 @@
   </footer>
 </template>
 
-<script setup lang="ts">
-</script>
+<style>
+.newsletters {
+     position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f00;
+    transition: all 500ms ease;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1170 485"><path d="M93.3383 50.2529C66.3045 51.6585 41.1387 60.7949 23.6656 75.5536C6.19249 90.3123 -2.15943 109.444 0.478019 128.654L38.7211 404.697C43.6663 440.539 85.4259 468.182 136.197 469.198L941.937 484.972C988.862 485.909 1030.4 463.653 1042.16 431.403L1166.78 89.5314C1174.91 67.1981 1167.44 43.4592 1146.67 25.7331C1125.9 8.00706 1094.36 -1.51972 1062.05 0.198227L93.3383 50.2529Z" /></svg>');
+    mask-repeat: no-repeat;
+    mask-position: center center;
+    mask-size: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+</style>

@@ -21,7 +21,7 @@
   <div :class="[props.container, 'p-2 rounded-full']">
     <div class="relative">
       <slot name="default">
-        <icon :name="props.iconName" class="absolute w-5 h-5 top-1/2 z-10 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+        <icon :name="props.iconName" class="absolute text-primary top-1/2 z-10 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3" />
       </slot>
       <div class="animate-spin animation-speed">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
@@ -42,6 +42,7 @@
 
 <style scoped>
   .animation-speed {
-    animation-duration: 15s;
+    animation-duration: 20s;
+    animation-direction: alternate-reverse;
   }
 </style>

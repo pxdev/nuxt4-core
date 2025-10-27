@@ -9,8 +9,8 @@
 </script>
 
 <template>
-  <figure class="block group">
-    <div :class="props.height" class="cursor-scale relative overflow-hidden rounded-xl">
+  <figure class="block group clip">
+    <div :class="props.height" class="cursor-scale relative overflow-hidden ">
       <nuxt-img
         :src="props.front"
         alt=""
@@ -27,4 +27,6 @@
   </figure>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

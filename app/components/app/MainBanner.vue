@@ -4,11 +4,10 @@
 
 <template>
   <section
-      class="h-full min-h-[calc(100svh-91px)] flex overflow-hidden relative bg-gradient-to-r from-primary/20  to-secondary/20">
+      class="h-[calc(100svh-91px)] flex overflow-hidden relative bg-gradient-to-r from-primary/20  to-secondary/20">
 
-
-    <img alt="" src="/images/shapes/islamic_s1.svg" class="absolute w-80 right-10 z-0" >
-    <img alt="" src="/images/shapes/islamic_ornament.svg" class="absolute w-xl opacity-5  bottom-20 inset-x-0" >
+    <img alt="" src="/images/shapes/islamic_s1.svg" class="absolute w-80 right-10 z-0">
+    <img alt="" src="/images/shapes/islamic_ornament.svg" class="absolute w-xl opacity-5  bottom-20 inset-x-0">
 
 
     <u-container class="w-full">
@@ -19,7 +18,7 @@
             <div class="">
               <p class="text-base font-bold">Your Journey to</p>
               <h2 class="text-5xl tracking-tight font-black">Arabic and Qur’anic
-                <icon class="w-14 h-14 text-primary inline-flex" name="tabler:flare-filled"/>
+                <icon class="w-14 h-14 text-primary inline-flex animate-ping" name="tabler:flare-filled"/>
               </h2>
               <h2 class="text-5xl tracking-tight font-black">Fluency</h2>
             </div>
@@ -36,21 +35,25 @@
           </header>
         </section>
 
-        <aside class="flex h-full items-center w-1/2 shrink-0 justify-center relative gap-10">
+        <aside class="flex  h-full items-center w-1/2 shrink-0 justify-center relative gap-6">
 
           <rotating-text
-              class="absolute left-24 bottom-10 z-20 "
+              :text-size="21"
+              container="h-32 w-32  border-primary bg-white"
+              text="One to one Tutoring • Expert Instructor • Flexible Scheduling • "
+              class="absolute z-20 left-1/2 -translate-x-1/2 bottom-1/2 mx-auto "
+              icon-name="hugeicons:online-learning-01"
           />
 
           <nuxt-img
               src="/images/banners/student_1.png"
-              class="will-change-transform rounded-full border-8 h-auto w-[260px] border-white"
+              class="h-auto w-[280px]  -translate-y-20 border-white rounded-4xl border-4 hover:scale-105 hover:rounded-xl transition-all duration-500"
               alt=""
           />
 
           <nuxt-img
               src="/images/banners/student_2.png"
-              class="will-change-transform rounded-full border-8 h-auto w-[260px] translate-y-20 border-white"
+              class="h-auto w-[280px]  border-white rounded-4xl border-4 hover:scale-105 hover:rounded-xl transition-all duration-500"
               alt=""
           />
 
@@ -65,4 +68,3 @@
 
   </section>
 </template>
-
