@@ -6,6 +6,8 @@
   <section
       class="h-[calc(100svh-91px)] flex overflow-hidden relative bg-gradient-to-r from-primary/20  to-secondary/20">
 
+
+
     <img alt="" src="/images/shapes/islamic_s1.svg" class="absolute w-80 right-10 z-0">
     <img alt="" src="/images/shapes/islamic_ornament.svg" class="absolute w-xl opacity-5  bottom-20 inset-x-0">
 
@@ -18,7 +20,7 @@
             <div class="">
               <p class="text-base font-bold">Your Journey to</p>
               <h2 class="text-5xl tracking-tight font-black">Arabic and Qur’anic
-                <icon class="w-14 h-14 text-primary inline-flex animate-ping" name="tabler:flare-filled"/>
+                <icon class="w-14 h-14 text-primary inline-flex" name="tabler:flare-filled"/>
               </h2>
               <h2 class="text-5xl tracking-tight font-black">Fluency</h2>
             </div>
@@ -44,6 +46,7 @@
               class="absolute z-20 left-1/2 -translate-x-1/2 bottom-1/2 mx-auto "
               icon-name="hugeicons:online-learning-01"
           />
+
 
           <nuxt-img
               src="/images/banners/student_1.png"

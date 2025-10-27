@@ -4,7 +4,7 @@
   >
 
 
-      <u-container class="relative z-10">
+      <u-container class="relative z-10 hidden">
         <div class="newsletters" />
         <div class="mx-auto max-w-xl py-12 md:py-24 ">
           <div class="text-center space-y-2 mb-6">
@@ -25,7 +25,7 @@
 
 
 
-    <div class="bg-primary-900">
+    <div class="bg-black">
       <u-container>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 py-6 md:py-12 rounded-3xl">
           <!-- Left: Logo & social -->
@@ -114,7 +114,7 @@
         </div>
       </u-container>
     </div>
-    <div class="bg-primary-800 dark:bg-neutral-900/10">
+    <div class="bg-black ">
       <u-container>
         <div class="py-4 text-center text-xs">
           <p>Copyright 2025 Components Designed By Components. All Rights Reserved</p>
