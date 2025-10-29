@@ -47,10 +47,12 @@
               icon-name="hugeicons:online-learning-01"
           />
 
+          <video autoplay loop muted class="w-[280px] h-[600px] -translate-y-20 border-white rounded-4xl border-4 hover:scale-105 hover:rounded-xl transition-all duration-500" src="/video/1027(1).mp4"></video>
+
 
           <nuxt-img
               src="/images/banners/student_1.png"
-              class="h-auto w-[280px]  -translate-y-20 border-white rounded-4xl border-4 hover:scale-105 hover:rounded-xl transition-all duration-500"
+              class="h-auto hidden w-[280px]  -translate-y-20 border-white rounded-4xl border-4 hover:scale-105 hover:rounded-xl transition-all duration-500"
               alt=""
           />
 

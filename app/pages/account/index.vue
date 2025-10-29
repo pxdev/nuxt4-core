@@ -39,8 +39,8 @@ const accountNavigation = [
   {
     id: 3,
     label: "My Learning",
-    to: "/",
-    ico: "hugeicons:home-05"
+    to: "/account/courses",
+    ico: "hugeicons:book-02"
   },
   {
     id: 4,
