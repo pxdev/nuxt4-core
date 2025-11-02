@@ -1,4 +1,5 @@
 import "dotenv/config";
+import bcrypt from "bcryptjs";
 import { useDB, now, toBigInt } from "../utils/db";
 
 type LectureSeed = {
@@ -79,6 +80,59 @@ const courses: CourseSeed[] = [
     ]
   },
   {
+    title: 'Luxury Property Negotiation Mastery',
+    slug: 'luxury-property-negotiation-mastery',
+    description: 'Scenario-based coaching for high-value property negotiations.',
+    thumbnail: '/images/courses/luxury-negotiation.jpg',
+    levelStrategy: 'scenario',
+    liveRoomLink: 'https://meet.example.com/luxury-negotiation',
+    durationMinutes: 105,
+    levels: [
+      {
+        label: 'Level One',
+        description: 'Build negotiation frameworks with market comps and buyer personas.',
+        meetingFrequency: 'bi-weekly',
+        lectures: [
+          {
+            title: 'Negotiation Frameworks',
+            description: 'Create structured approaches for listing and buyer representation.',
+            durationMinutes: 90,
+            resourceLink: 'https://cdn.example.com/resources/negotiation-framework.pdf',
+            startsAt: null
+          },
+          {
+            title: 'Buyer Persona Lab',
+            description: 'Craft messaging for international and investor personas.',
+            durationMinutes: 75,
+            resourceLink: null,
+            startsAt: null
+          }
+        ]
+      },
+      {
+        label: 'Level Two',
+        description: 'Role-play advanced objections and multi-party deal structures.',
+        meetingFrequency: 'weekly',
+        lectures: [
+          {
+            title: 'Multi-Offer Tactics',
+            description: 'Handle multiple interested buyers while protecting client equity.',
+            durationMinutes: 110,
+            resourceLink: 'https://cdn.example.com/resources/multi-offer-checklist.xlsx',
+            startsAt: null
+          },
+          {
+            title: 'Cross-Border Case Study',
+            description: 'Navigate due diligence for offshore investors in prime markets.',
+            durationMinutes: 95,
+            resourceLink: null,
+            startsAt: null
+          }
+        ]
+      }
+    ]
+  },
+  {
     title: 'Executive Arabic Immersion',
     slug: 'executive-arabic-immersion',
     description: 'Accelerated Arabic coaching tailored for real estate negotiations.',
@@ -131,6 +185,42 @@ async function resetCourseData() {
   await db.courseLevel.deleteMany();
   await db.userCourse.deleteMany();
   await db.course.deleteMany();
+}
+
+async function ensureAdminUser(): Promise<number> {
+  const existingAdmin = await db.user.findFirst({
+    where: { role: "admin" },
+    orderBy: { id: "asc" },
+    select: { id: true }
+  });
+
+  if (existingAdmin?.id) {
+    return existingAdmin.id;
+  }
+
+  const timestamp = now();
+  const password = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe123!";
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const admin = await db.user.create({
+    data: {
+      name: "Platform Admin",
+      email: process.env.SEED_ADMIN_EMAIL ?? "admin@example.com",
+      password: hashedPassword,
+      role: "admin",
+      createdAt: timestamp,
+      updatedAt: timestamp
+    },
+    select: { id: true }
+  });
+
+  console.log(
+    `Admin user created (${admin.id}). Login with ${
+      process.env.SEED_ADMIN_EMAIL ?? "admin@example.com"
+    } / ${password}`
+  );
+
+  return admin.id;
 }
 
 async function seedCourses(): Promise<number[]> {
@@ -226,6 +316,7 @@ async function enrollFirstUser(courseIds: number[]) {
 async function main() {
   let exitCode = 0;
   try {
+    await ensureAdminUser();
     console.log('Resetting course data...');
     await resetCourseData();
     console.log('Creating sample courses...');

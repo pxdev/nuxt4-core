@@ -97,10 +97,10 @@ const lectureRows = computed(() =>
 );
 
 const lectureColumns = [
-  { key: "title", label: "Lecture" },
-  { key: "duration", label: "Duration" },
-  { key: "startsAt", label: "Schedule" },
-  { key: "resourceLink", label: "Resources" },
+  { id: "title", key: "title", label: "Lecture" },
+  { id: "duration", key: "duration", label: "Duration" },
+  { id: "startsAt", key: "startsAt", label: "Schedule" },
+  { id: "resourceLink", key: "resourceLink", label: "Resources" },
 ];
 </script>
 

@@ -10,6 +10,9 @@ export default defineEventHandler(async (event) => {
   if (Object.prototype.hasOwnProperty.call(body, "birthday")) {
     updateData.birthday = toBigInt(body.birthday);
   }
+  if (Object.prototype.hasOwnProperty.call(updateData, "role")) {
+    delete updateData.role;
+  }
 
   try {
     await DB.user.update({
@@ -31,6 +34,7 @@ export default defineEventHandler(async (event) => {
       name: true,
       username: true,
       email: true,
+      role: true,
       birthday: true,
       country: true,
       aboutMe: true,
@@ -43,6 +47,12 @@ export default defineEventHandler(async (event) => {
   if (!updated) throw createError({ statusCode: 500, data: { success: false } });
 
   const normalized = normalizeBigInt(updated);
-  await setUserSession(event, { user: { ...user, ...normalized } });
+  await setUserSession(event, {
+    user: {
+      ...user,
+      ...normalized,
+      isAdmin: normalized.role === "admin"
+    }
+  });
   return { success: true };
 });

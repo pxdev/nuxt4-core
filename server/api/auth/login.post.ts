@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
         id: true,
         name: true,
         username: true,
+        role: true,
         email: true,
         password: true,
         birthday: true,
@@ -52,13 +53,17 @@ export default defineEventHandler(async (event) => {
     // Create session
     const { password: _, ...userWithoutPassword } = user;
     const normalizedUser = normalizeBigInt(userWithoutPassword);
+    const sessionUser = {
+      ...normalizedUser,
+      isAdmin: normalizedUser.role === "admin"
+    };
     await setUserSession(event, {
-      user: normalizedUser
+      user: sessionUser
     });
 
     return {
       success: true,
-      user: normalizedUser
+      user: sessionUser
     };
   } catch (error: any) {
     throw createError({

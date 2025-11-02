@@ -67,6 +67,7 @@ export default defineEventHandler(async (event) => {
         id: true,
         name: true,
         username: true,
+        role: true,
         email: true,
         birthday: true,
         country: true,
@@ -78,15 +79,19 @@ export default defineEventHandler(async (event) => {
     });
 
     const normalizedUser = normalizeBigInt(newUser);
+    const sessionUser = {
+      ...normalizedUser,
+      isAdmin: normalizedUser.role === "admin"
+    };
 
     // Create session
     await setUserSession(event, {
-      user: normalizedUser
+      user: sessionUser
     });
 
     return {
       success: true,
-      user: normalizedUser
+      user: sessionUser
     };
   } catch (error: any) {
     throw createError({

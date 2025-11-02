@@ -14,6 +14,7 @@ export const handleOAuth = async (
     id: true,
     name: true,
     username: true,
+    role: true,
     email: true,
     birthday: true,
     country: true,
@@ -115,7 +116,8 @@ export const handleOAuth = async (
       await setUserSession(event, {
         user: {
           ...normalizedUser,
-          hash: userHash
+          hash: userHash,
+          isAdmin: normalizedUser.role === "admin"
         }
       });
 
@@ -151,7 +153,8 @@ export const handleOAuth = async (
     await setUserSession(event, {
       user: {
         ...session.user,
-        hash: userHash
+        hash: userHash,
+        isAdmin: session.user?.role === "admin"
       }
     });
 

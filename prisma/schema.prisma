@@ -13,6 +13,7 @@ model User {
   username  String?  @db.VarChar(255)
   password  String?  @db.Text
   email     String   @db.VarChar(255)
+  role      Role     @default(user)
   birthday  BigInt?  @db.BigInt
   country   String?  @db.VarChar(255)
   aboutMe   String?  @db.Text @map("about_me")
@@ -139,4 +140,9 @@ model UserCourse {
   activeLevel CourseLevel? @relation("ActiveLevel", fields: [activeLevelId], references: [id])
 
   @@map("user_courses")
+}
+
+enum Role {
+  admin
+  user
 }

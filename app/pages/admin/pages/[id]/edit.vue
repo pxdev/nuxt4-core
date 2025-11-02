@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useDateFormat } from "@vueuse/core";
-import AdminCourseForm from "~/components/admin/CourseForm.vue";
+import AdminPageForm from "~/components/admin/PageForm.vue";
 
 definePageMeta({
   middleware: ["admin"],
@@ -11,22 +11,22 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 
-const courseId = computed(() => Number.parseInt(route.params.id, 10));
+const pageId = computed(() => Number.parseInt(route.params.id, 10));
 
-if (!Number.isFinite(courseId.value) || courseId.value <= 0) {
-  throw createError({ statusCode: 404, statusMessage: "Course not found" });
+if (!Number.isFinite(pageId.value) || pageId.value <= 0) {
+  throw createError({ statusCode: 404, statusMessage: "Page not found" });
 }
 
 const {
-  data: course,
+  data: page,
   status,
   error,
   refresh,
 } = await useAsyncData(
-  () => `admin-course-${courseId.value}`,
-  () => $fetch(`/api/admin/courses/${courseId.value}`),
+  () => `admin-page-${pageId.value}`,
+  () => $fetch(`/api/admin/pages/${pageId.value}`),
   {
-    watch: [courseId],
+    watch: [pageId],
   },
 );
 
@@ -44,24 +44,6 @@ const formatDate = (value) => {
   }
 };
 
-const metrics = computed(() => [
-  {
-    label: "Levels",
-    value: course.value?.levelCount ?? 0,
-    icon: "i-heroicons-squares-2x2",
-  },
-  {
-    label: "Lectures",
-    value: course.value?.lectureCount ?? 0,
-    icon: "i-heroicons-queue-list",
-  },
-  {
-    label: "Enrollments",
-    value: course.value?.enrollmentCount ?? 0,
-    icon: "i-heroicons-user-group",
-  },
-]);
-
 const handleSubmit = async (values) => {
   if (isSaving.value) {
     return;
@@ -70,14 +52,14 @@ const handleSubmit = async (values) => {
   isSaving.value = true;
 
   try {
-    await $fetch(`/api/admin/courses/${courseId.value}`, {
+    await $fetch(`/api/admin/pages/${pageId.value}`, {
       method: "PATCH",
       body: values,
     });
 
     toast.add({
-      title: "Course saved",
-      description: "Updates are live for learners.",
+      title: "Page saved",
+      description: "Updates are live on your site.",
       color: "emerald",
     });
 
@@ -92,10 +74,6 @@ const handleSubmit = async (values) => {
     isSaving.value = false;
   }
 };
-
-const handleViewCourse = () => {
-  router.push(`/account/courses/${courseId.value}`);
-};
 </script>
 
 <template>
@@ -103,23 +81,24 @@ const handleViewCourse = () => {
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl font-semibold text-gray-900">
-          {{ course?.title ?? "Edit course" }}
+          {{ page?.title ?? "Edit page" }}
         </h1>
         <p class="mt-1 text-sm text-gray-500">
-          Last updated {{ formatDate(course?.updatedAt) }}
+          Last updated {{ formatDate(page?.updatedAt) }}
         </p>
       </div>
       <div class="flex gap-3">
-        <u-button variant="ghost" color="gray" to="/admin/courses">
-          Back to courses
+        <u-button variant="ghost" color="gray" to="/admin/pages">
+          Back to pages
         </u-button>
         <u-button
           variant="soft"
           color="primary"
           trailing-icon="i-heroicons-arrow-top-right-on-square"
-          @click="handleViewCourse"
+          :to="`/pages/${page?.slug}`"
+          target="_blank"
         >
-          View as learner
+          View live
         </u-button>
       </div>
     </div>
@@ -134,7 +113,7 @@ const handleViewCourse = () => {
       v-else-if="error"
       icon="i-heroicons-exclamation-triangle"
       color="rose"
-      :title="error.message ?? 'Unable to load course'"
+      :title="error.message ?? 'Unable to load page'"
       description="Try refreshing the page. If the issue continues, contact support."
       :actions="[
         {
@@ -146,44 +125,24 @@ const handleViewCourse = () => {
       ]"
     />
 
-    <template v-else-if="course">
-      <div class="grid gap-6 md:grid-cols-3">
-        <u-card
-          v-for="metric in metrics"
-          :key="metric.label"
-          class="flex items-center gap-4"
-        >
-          <div class="flex size-10 items-center justify-center rounded-full bg-primary-50 text-primary-500">
-            <u-icon :name="metric.icon" class="h-6 w-6" />
-          </div>
-          <div>
-            <p class="text-xs uppercase tracking-wide text-gray-500">
-              {{ metric.label }}
-            </p>
-            <p class="text-lg font-semibold text-gray-900">
-              {{ metric.value }}
-            </p>
-          </div>
-        </u-card>
-      </div>
-
-      <u-card class="space-y-6">
-        <admin-course-form
-          :initial-value="course"
+    <template v-else-if="page">
+      <u-card>
+        <admin-page-form
+          :initial-value="page"
           :loading="isSaving"
-          submit-label="Save changes"
+          submit-label="Save page"
           @submit="handleSubmit"
         >
           <template #footer>
             <u-button
               variant="ghost"
               color="gray"
-              @click="router.push('/admin/courses')"
+              @click="router.push('/admin/pages')"
             >
               Cancel
             </u-button>
           </template>
-        </admin-course-form>
+        </admin-page-form>
       </u-card>
     </template>
   </u-container>

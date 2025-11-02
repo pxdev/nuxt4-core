@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import AdminCourseForm from "~/components/admin/CourseForm.vue";
+import AdminPageForm from "~/components/admin/PageForm.vue";
 
 definePageMeta({
   middleware: ["admin"],
@@ -18,21 +18,21 @@ const handleSubmit = async (values) => {
   isSubmitting.value = true;
 
   try {
-    const created = await $fetch("/api/admin/courses", {
+    const created = await $fetch("/api/admin/pages", {
       method: "POST",
       body: values,
     });
 
     toast.add({
-      title: "Course created",
-      description: "Your course is ready. Add levels and lectures next.",
+      title: "Page created",
+      description: "Your page is ready. Add more details any time.",
       color: "emerald",
     });
 
-    await router.push(`/admin/courses/${created.id}/edit`);
+    await router.push(`/admin/pages/${created.id}/edit`);
   } catch (err) {
     toast.add({
-      title: "Unable to create course",
+      title: "Unable to create page",
       description: err?.data?.message || "Please review the form and try again.",
       color: "rose",
     });
@@ -46,28 +46,28 @@ const handleSubmit = async (values) => {
   <u-container class="py-10 space-y-6">
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-semibold text-gray-900">Create a course</h1>
+        <h1 class="text-2xl font-semibold text-gray-900">Create a page</h1>
         <p class="mt-1 text-sm text-gray-500">
-          Set up a new coaching program with a clear description and delivery details.
+          Publish marketing or support content that appears on your site.
         </p>
       </div>
-      <u-button to="/admin/courses" variant="ghost" color="gray">
-        Back to courses
+      <u-button to="/admin/pages" variant="ghost" color="gray">
+        Back to pages
       </u-button>
     </div>
 
     <u-card>
-      <admin-course-form
+      <admin-page-form
         :loading="isSubmitting"
-        submit-label="Create course"
+        submit-label="Create page"
         @submit="handleSubmit"
       >
         <template #footer>
-          <u-button to="/admin/courses" variant="ghost" color="gray">
+          <u-button to="/admin/pages" variant="ghost" color="gray">
             Cancel
           </u-button>
         </template>
-      </admin-course-form>
+      </admin-page-form>
     </u-card>
   </u-container>
 </template>

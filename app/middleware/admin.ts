@@ -9,10 +9,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return navigateTo(`/auth/login?redirect=${encodeURIComponent(to.fullPath)}`);
   }
 
+  const u = user.value as { isAdmin?: boolean; role?: string; id?: number } | null;
+
   const isAdmin =
-    user.value?.isAdmin === true ||
-    user.value?.role === "admin" ||
-    user.value?.id === 1;
+    u?.isAdmin === true ||
+    u?.role === "admin" ||
+    u?.id === 1;
 
   if (!isAdmin) {
     return navigateTo("/");
